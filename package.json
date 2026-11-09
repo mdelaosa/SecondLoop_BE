@@ -1,32 +1,28 @@
 {
-  "name": "secondloop_be",
+  "name": "second-loop-be",
   "version": "1.0.0",
-  "description": "",
+  "type": "module",
+  "description": "Proyecto final - API de compra-venta de segunda mano SecondLoop",
   "main": "index.js",
+  "engines": {
+    "node": ">=22.9"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --env-file-if-exists=.env index.js",
+    "dev": "node --env-file-if-exists=.env --watch index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mdelaosa/SecondLoop_BE.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/mdelaosa/SecondLoop_BE/issues"
-  },
-  "homepage": "https://github.com/mdelaosa/SecondLoop_BE#readme",
+  "keywords": [
+    "express",
+    "init",
+    "template"
+  ],
+  "author": "Grupo backend UNIR del Master en Full Stack utilizando plantilla del profesor Mario Girón Martín",
+  "license": "MIT",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "cors": "^2.8.6",
-    "dotenv": "^18.0.9",
-    "express": "^5.3.0",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.24.6"
+    "cors": "^2.8.5",
+    "express": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "@types/express": "^5.0.0"
   }
 }
