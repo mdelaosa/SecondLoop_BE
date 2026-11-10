@@ -1,115 +1,72 @@
-# Express Base Application for API Creation
+# Second Loop - Backend API
 
-This is a basic Express application template designed to help you create APIs
-quickly. It includes essential configurations and setup for starting an Express
-server.
+API REST desarrollada con Node.js, Express y MySQL para el proyecto final del Máster en Full Stack Developer de la UNIR que consiste en el desarrollo de una plataforma de compra-venta de artículos de segunda mano. 
 
-> **⚠️ Note:** Since `v2.0.0` this template uses **ES Modules (ESM)** syntax
-> (`import`/`export`). If you need the legacy CommonJS version
-> (`require`/`module.exports`), clone the `v1.5.0-cjs` tag:
->
-> ```bash
-> git clone -b v1.5.0-cjs https://github.com/mariogiron/express-init-template.git project-name
-> ```
+---
 
-## Features
+## 📋 Requisitos previos
 
-- Basic Express server setup with **ES Modules**
-- CORS enabled
-- Native `.env` loading (`--env-file-if-exists`), no `dotenv`
-- Native file watching (`--watch`), no `nodemon`
+Antes de empezar, asegúrate de tener instalado en tu equipo:
+* **Node.js** (v22.9 o superior)
+* **pnpm** 
+* **MySQL Server** y **MySQL Workbench**
 
-## Getting Started
+---
 
-### Prerequisites
+## 🚀 Instalación y configuración inicial
 
-Ensure you have Node.js (v22.9 or later) and npm installed on your machine. You can download them
-from [Node.js official website](https://nodejs.org/).
+1. **Clona el repositorio y muévete a la rama de desarrollo (develop):**
+   ```bash
+   git clone https://github.com/mdelaosa/SecondLoop_BE.git second_loop_be
+   cd second_loop_be
+   git checkout develop
+   ```
 
-### Installation
+2. **Instala las dependencias del proyecto:**
+   ```bash
+   pnpm install
+   ```
 
-1. **Clone the repository:**
+3. **Configura las variables de entorno:**
+   * Duplica el archivo `.env.example` en la raíz del proyecto y renómbralo a **`.env`**.
+   * Abre `.env` y rellena tu contraseña local de MySQL:
+   ```env
+   PORT=3000
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=tu_contraseña_de_mysql
+   DB_NAME=second_loop_db
+   JWT_SECRET=una_clave_secreta_muy_segura_para_el_master
+   ```
 
-```bash
-git clone https://github.com/mariogiron/express-init-template.git project-name
-```
+---
 
-2. **Navigate to the project directory:**
+## ▶️ Arrancar el servidor
 
-```bash
-cd project-name
-```
+* **Modo desarrollo** (reinicio automático al guardar cambios):
+  ```bash
+  pnpm dev
+  ```
+* **Modo producción:**
+  ```bash
+  pnpm start
+  ```
+El servidor escuchará por el puerto definido en la variable PORT del fichero de entorno y por defecto en `http://localhost:3000`.
 
-3. **Install the dependencies:**
+---
 
-```bash
-npm install
-```
+## 🌿 Flujo de trabajo en Git (Equipo)
 
-### Environment Configuration
+* **`main`**: Rama de producción limpia (intocable hasta la entrega final).
+* **`develop`**: Rama principal de integración y pruebas del equipo.
+* **Para añadir una tarea nueva:**
+  1. Actualiza tu rama `develop` local (`git checkout develop` y `git pull origin develop`).
+  2. Crea una rama nueva (`git checkout -b feature/nombre-de-tu-tarea`).
+  3. Sube tus cambios y abre un **Pull Request apuntando siempre hacia `develop`**.
 
-Create a `.env` file in the root of the project and configure your environment
-variables. An example `.env` file might look like this:
+---
 
-```
-PORT=3000
-```
+## 🙏 Créditos y Atribución
 
-### Running the Application
+Este proyecto ha sido inicializado utilizando la plantilla base [express-init-template](https://github.com/mariogiron/express-init-template) desarrollada por el profesor **Mario Girón** (UNIR), bajo licencia MIT.
 
-#### Start the server
-
-Start the server by running:
-
-```bash
-npm start
-```
-
-The server will start and listen on the port defined in your `.env` file, or
-default to port 3000 if not specified.
-
-#### Development mode
-
-To start the server in development mode with Node's native `--watch`, which will
-automatically restart the server on file changes, run:
-
-```bash
-npm run dev
-```
-
-### Available Scripts
-
-- **start**: Runs `node --env-file-if-exists=.env index.js` to start the server.
-- **dev**: Runs `node --env-file-if-exists=.env --watch index.js` to start the
-  server in development mode with automatic restarts on file changes.
-
-### Project Structure
-
-    ├── src
-    │   ├── app.js          # Express app configuration
-    │   ├── models          # Data models
-    │   ├── controllers     # Route controllers
-    │   ├── routes          # Application routes
-    ├── .env                # Environment variables
-    ├── index.js            # Server creation and configuration
-    ├── package.json        # Project metadata and dependencies
-
-### Adding Routes
-
-Routes are imported using ESM syntax. Remember to include the `.js` extension:
-
-```js
-// src/app.js
-import apiRoutes from "./routes/api.routes.js";
-app.use("/api", apiRoutes);
-```
-
-### Contributing
-
-Feel free to submit issues and pull requests to improve the project. For major
-changes, please open an issue first to discuss what you would like to change.
-
-### License
-
-This project is licensed under the MIT License - see the LICENSE file for
-details.
