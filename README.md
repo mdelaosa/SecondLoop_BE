@@ -40,30 +40,33 @@ Antes de empezar, asegúrate de tener instalado en tu equipo:
    ```
 4. **Estructura de carpetas del proyecto:**
 
-    second_loop_be/
-    ├── node_modules/              <-- (Ignorado en Git) Librerías instaladas
-    ├── src/
-    │   ├── config/
-    │   │   └── db.js              <-- Conexión a la base de datos MySQL (Pool de conexiones)
-    │   ├── constants/
-    │   │   └── enums.js           <-- Constantes y ENUMs en mayúsculas (Localizacion, Roles, Estados)
-    │   ├── models/                <-- Consultas SQL (SELECT, INSERT, UPDATE, DELETE)
-    │   │   └── *.model.js
-    │   ├── controllers/           <-- Lógica de negocio, roles y respuestas HTTP
-    │   │   └── *.controller.js
-    │   ├── routes/                <-- Definición de URLs (endpoints de la API)
-    │   │   ├── api.routes.js
-    │   │   └── *.routes.js
-    │   ├── middlewares/           <-- Seguridad JWT, validación de datos y control de roles
-    │   │   └── *.middleware.js
-    │   └── app.js                 <-- Configuración de Express donde se unen todas las rutas
-    ├── .env                       <-- (Ignorado en Git) Contraseñas de MySQL y claves secretas
-    ├── .env.example               <-- Archivo de ejemplo para el fichero de entorno
-    ├── .gitignore                 <-- Archivo que oculta node_modules y .env a Git
-    ├── index.js                   <-- Punto de entrada que arranca el servidor (app.listen)
-    └── package.json               <-- Metadatos y lista de dependencias del proyecto
+  ```text
+  second_loop_be/
+  ├── node_modules/              <-- (Ignorado en Git) Librerías instaladas
+  ├── src/
+  │   ├── config/
+  │   │   └── db.js              <-- Conexión a la base de datos MySQL (Pool de conexiones)
+  │   ├── constants/
+  │   │   └── enums.js           <-- Vuestros ENUMs en mayúsculas (Roles, Estados)
+  │   ├── models/                <-- Consultas SQL (SELECT, INSERT, UPDATE, DELETE)
+  │   │   └── *.model.js
+  │   ├── controllers/           <-- Lógica de negocio, roles y respuestas HTTP
+  │   │   └── *.controller.js
+  │   ├── routes/                <-- Definición de URLs (endpoints de la API)
+  │   │   ├── api.routes.js
+  │   │   └── *.routes.js
+  │   ├── middlewares/           <-- Seguridad JWT, validación de datos y control de roles
+  │   │   └── *.middleware.js
+  │   └── app.js                 <-- Configuración de Express donde se unen todas las rutas
+  ├── .env                       <-- (Ignorado en Git) Contraseñas de MySQL y claves secretas
+  ├── .env.example               <-- Archivo de ejemplo para el fichero de entorno
+  ├── .gitignore                 <-- Archivo que oculta node_modules y .env a Git
+  ├── index.js                   <-- Punto de entrada que arranca el servidor (app.listen)
+  └── package.json               <-- Metadatos y lista de dependencias del proyecto
 
-    Nota: Los archivos .gitkeep dentro de las carpetas se pueden borrar
+   Nota: Los archivos .gitkeep dentro de las carpetas se pueden borrar
+  ```
+
 
 5. **Crea la base de datos local (`second_loop_db`):**
    * Abre **MySQL Workbench** y conéctate a tu servidor local.
