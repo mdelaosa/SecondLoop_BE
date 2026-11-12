@@ -38,6 +38,37 @@ Antes de empezar, asegúrate de tener instalado en tu equipo:
    DB_NAME=second_loop_db
    JWT_SECRET=una_clave_secreta_muy_segura_para_el_master
    ```
+4. **Estructura de carpetas del proyecto:**
+
+    second_loop_be/
+    ├── node_modules/              <-- (Ignorado en Git) Librerías instaladas
+    ├── src/
+    │   ├── config/
+    │   │   └── db.js              <-- Conexión a la base de datos MySQL (Pool de conexiones)
+    │   ├── constants/
+    │   │   └── enums.js           <-- Constantes y ENUMs en mayúsculas (Localizacion, Roles, Estados)
+    │   ├── models/                <-- Consultas SQL (SELECT, INSERT, UPDATE, DELETE)
+    │   │   └── *.model.js
+    │   ├── controllers/           <-- Lógica de negocio, roles y respuestas HTTP
+    │   │   └── *.controller.js
+    │   ├── routes/                <-- Definición de URLs (endpoints de la API)
+    │   │   ├── api.routes.js
+    │   │   └── *.routes.js
+    │   ├── middlewares/           <-- Seguridad JWT, validación de datos y control de roles
+    │   │   └── *.middleware.js
+    │   └── app.js                 <-- Configuración de Express donde se unen todas las rutas
+    ├── .env                       <-- (Ignorado en Git) Contraseñas de MySQL y claves secretas
+    ├── .env.example               <-- Archivo de ejemplo para el fichero de entorno
+    ├── .gitignore                 <-- Archivo que oculta node_modules y .env a Git
+    ├── index.js                   <-- Punto de entrada que arranca el servidor (app.listen)
+    └── package.json               <-- Metadatos y lista de dependencias del proyecto
+
+    Nota: Los archivos .gitkeep dentro de las carpetas se pueden borrar
+
+5. **Crea la base de datos local (`second_loop_db`):**
+   * Abre **MySQL Workbench** y conéctate a tu servidor local.
+   * Ejecuta el script **`database/second_loop_schema.sql`** (`File > Run SQL Script...`) para crear automáticamente la base de datos y sus tablas.
+   *(Nota: El archivo `database/second_loop_db.mwb` contiene el diagrama visual EER).*
 
 ---
 
