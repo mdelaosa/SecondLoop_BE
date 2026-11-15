@@ -32,10 +32,12 @@ Antes de empezar, asegúrate de tener instalado en tu equipo:
    * Abre `.env` y rellena tu contraseña local de MySQL:
    ```env
    PORT=3000
+
    DB_HOST=localhost
    DB_USER=root
    DB_PASSWORD=tu_contraseña_de_mysql
    DB_NAME=second_loop_db
+   DB_PORT=3306
    JWT_SECRET=una_clave_secreta_muy_segura_para_el_master
    ```
 4. **Estructura de carpetas del proyecto:**
