@@ -2,7 +2,7 @@
   "name": "second-loop-be",
   "version": "1.0.0",
   "type": "module",
-  "description": "Proyecto final - API de compra-venta de segunda mano SecondLoop",
+  "description": "API de compra-venta de segunda mano SecondLoop",
   "main": "index.js",
   "engines": {
     "node": ">=22.9"
@@ -16,11 +16,13 @@
     "init",
     "template"
   ],
-  "author": "Grupo backend UNIR del Master en Full Stack utilizando plantilla del profesor Mario Girón Martín",
+  "author": "Grupo 1 del Proyecto Final Master en Full Stack de UNIR utilizando plantilla del profesor Mario Girón Martín",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "express": "^5.0.0",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.6"
   },
   "devDependencies": {

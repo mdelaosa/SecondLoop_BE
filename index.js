@@ -1,6 +1,7 @@
 // Server creation and configuration
 import http from "node:http";
 import app from "./src/app.js";
+import "./src/config/db.js";
 
 // Server creation
 const server = http.createServer(app);
