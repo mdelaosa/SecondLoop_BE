@@ -77,6 +77,59 @@ const obtenerUsuarioPorEmail = async (email) => {
     return result[0];
 }
 
+/**
+ * Cambia el estado activo de un usuario.
+ *
+ * @param {number|string} id - Identificador del usuario.
+ * @param {number|string} estado - Nuevo estado activo del usuario.
+ * @returns {Promise<Object>} Resultado devuelto por la operación de actualización.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
+const cambiarEstado = async (id, estado) => {
+    const [result] = await db.execute('UPDATE usuarios SET esta_activo = ? WHERE id = ?', [estado, id]);
+    return result;
+}
 
+/**
+ * Cambia el rol asignado a un usuario.
+ *
+ * @param {number|string} id - Identificador del usuario.
+ * @param {string} rol - Nuevo rol del usuario.
+ * @returns {Promise<Object>} Resultado devuelto por la operación de actualización.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
+const cambiarRol = async (id, rol) => {
+    const [result] = await db.execute('UPDATE usuarios SET rol = ? WHERE id = ?', [rol, id]);
+    return result;
+}
 
-export { insertarUsuario, obtenerUsuarioPorEmail, obtenerUsuarioPorId, actualizarUsuario, borrarUsuario };
+/**
+ * Obtiene todos los artículos publicados por un usuario.
+ *
+ * @param {number|string} id - Identificador del usuario vendedor.
+ * @returns {Promise<Object[]>} Lista de artículos asociados al usuario.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
+const obtenerArticulos = async (id) => {
+    const [result] = await db.execute('SELECT * FROM articulos WHERE vendedor_id = ?', [id]);
+    return result;
+}
+
+/**
+ * Obtiene todas las valoraciones recibidas por un usuario.
+ *
+ * @param {number|string} id - Identificador del usuario receptor.
+ * @returns {Promise<Object[]>} Lista de valoraciones recibidas por el usuario.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
+const obtenerValoraciones = async (id) => {
+    const [result] = await db.execute('SELECT * FROM valoraciones WHERE receptor_id = ?', [id]);
+    return result;
+}
+
+const publicarValoracion = async ({emisor_id, receptor_id, puntuacion, comentario}) => {
+    const [result] = await db.execute('INSERT INTO valoraciones (emisor_id, receptor_id, puntuacion, comentario) VALUES (?, ?, ?, ?)', [emisor_id, receptor_id, puntuacion, comentario]);
+    return result.insertId;
+}
+
+export { insertarUsuario, obtenerUsuarioPorEmail, obtenerUsuarioPorId, actualizarUsuario, borrarUsuario, cambiarEstado, cambiarRol, obtenerArticulos, obtenerValoraciones, publicarValoracion };

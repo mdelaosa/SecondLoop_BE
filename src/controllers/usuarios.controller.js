@@ -1,4 +1,4 @@
-import { insertarUsuario, obtenerUsuarioPorEmail, obtenerUsuarioPorId, actualizarUsuario, borrarUsuario } from '../models/usuarios.model.js';
+import { insertarUsuario, obtenerUsuarioPorEmail, obtenerUsuarioPorId, actualizarUsuario, borrarUsuario, cambiarEstado, cambiarRol, obtenerArticulos, obtenerValoraciones, publicarValoracion } from '../models/usuarios.model.js';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -103,7 +103,76 @@ const actualizarPerfil = async (req, res) => {
 const borrarPerfil = async (req, res) => {
     const { id } = req.usuario;
     await borrarUsuario(id);
-    res.json({ message: 'Perfil borrado correctamente' });
+    res.json({ message: 'Perfil borrado correctamente', usuario: req.usuario });
 }
 
-export { registro, login, perfil, actualizarPerfil, borrarPerfil };
+/**
+ * Cambia el estado activo de un usuario administrador.
+ *
+ * @param {import('express').Request} req - Solicitud HTTP con el identificador en `req.params.id` y el estado en `req.body.estado`.
+ * @param {import('express').Response} res - Respuesta HTTP con el usuario actualizado o un error de validación.
+ * @returns {Promise<void>} Finaliza la respuesta HTTP después de actualizar el estado.
+ * @throws {Error} Si ocurre un error al actualizar o consultar el usuario.
+ */
+const cambiarEstadoUsuario = async (req, res) => {
+    const { id } = req.params;
+    const { estado } = req.body;
+    if (estado !== 0 && estado !== 1) {
+        return res.status(400).json({ message: 'Estado inválido. Debe ser 0 o 1.' });
+    }
+    await cambiarEstado(id, estado);
+    const usuario = await obtenerUsuarioPorId(id);
+    res.json({ message: 'Estado del usuario actualizado correctamente', usuario });
+}
+
+/**
+ * Cambia el rol asignado a un usuario.
+ *
+ * @param {import('express').Request} req - Solicitud HTTP con el identificador en `req.params.id` y el rol en `req.body.rol`.
+ * @param {import('express').Response} res - Respuesta HTTP con el usuario actualizado.
+ * @returns {Promise<void>} Finaliza la respuesta HTTP después de actualizar el rol.
+ * @throws {Error} Si ocurre un error al actualizar o consultar el usuario.
+ */
+const cambiarRolUsuario = async (req, res) => {
+    const { id } = req.params;
+    const { rol } = req.body;
+    await cambiarRol(id, rol);
+    const usuario = await obtenerUsuarioPorId(id);
+    res.json({ message: 'Rol del usuario actualizado correctamente', usuario });
+}
+
+/**
+ * Obtiene los artículos publicados por un usuario.
+ *
+ * @param {import('express').Request} req - Solicitud HTTP que contiene el identificador del usuario en `req.params.id`.
+ * @param {import('express').Response} res - Respuesta HTTP con la lista de artículos del usuario.
+ * @returns {Promise<void>} Finaliza la respuesta HTTP con los artículos encontrados.
+ * @throws {Error} Si ocurre un error al consultar los artículos.
+ */
+const obtenerArticulosUsuario = async (req, res) => {
+    const { id } = req.params;
+    const articulos = await obtenerArticulos(id);
+            res.json({ message: 'Artículos del usuario obtenidos correctamente', articulos });
+}
+
+/**
+ * Obtiene las valoraciones recibidas por un usuario.
+ *
+ * @param {import('express').Request} req - Solicitud HTTP que contiene el identificador del usuario en `req.params.id`.
+ * @param {import('express').Response} res - Respuesta HTTP con la lista de valoraciones del usuario.
+ * @returns {Promise<void>} Finaliza la respuesta HTTP con las valoraciones encontradas.
+ * @throws {Error} Si ocurre un error al consultar las valoraciones.
+ */
+const obtenerValoracionesUsuario = async (req, res) => {
+    const { id } = req.params;
+    const valoraciones = await obtenerValoraciones(id);
+    res.json({ message: 'Valoraciones del usuario obtenidas correctamente', valoraciones });
+}
+
+const publicarValoracionUsuario = async (req, res) => {
+    const { puntuacion, comentario } = req.body;
+    const id = await publicarValoracion({ emisor_id: req.usuario.id, receptor_id: req.params.id, puntuacion, comentario });
+    res.json({ message: 'Valoración publicada correctamente', id });
+}
+
+export { registro, login, perfil, actualizarPerfil, borrarPerfil, cambiarEstadoUsuario, cambiarRolUsuario, obtenerArticulosUsuario, obtenerValoracionesUsuario, obtenerValoraciones, publicarValoracionUsuario };

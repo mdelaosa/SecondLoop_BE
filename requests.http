@@ -1,9 +1,9 @@
 // Requests to test the API from VS Code (REST Client extension)
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTc5NTA1ODI4NywiZXhwIjoxNzk1MDYxODg3fQ.ab6l1w-2p8vI_32X5yD_aXYchTQIl9dqff94oT1ROk4
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzk1MDY0MjQ0LCJleHAiOjE3OTUwNjc4NDR9.e-ibOLYWOIrFySS-Srgunr--g0hcuwbnfHORaId1v38
 
 ### POST Registrar usuario
-POST {{baseUrl}}/api/usuarios/registro
+POST {{baseUrl}}/api/auth/registro
 Content-Type: application/json
 
 {
@@ -18,11 +18,11 @@ Content-Type: application/json
 }
 
 ### POST Login
-POST {{baseUrl}}/api/usuarios/login
+POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "evelinandrade@mail.com",
+    "email": "admin@email.com",
     "password": "123456"
 }
 
@@ -46,3 +46,37 @@ Content-Type: application/json
 ### DELETE Borrar perfil de usuario desde el token
 DELETE {{baseUrl}}/api/usuarios/perfil
 Authorization: {{token}}
+
+### PATCH Cambiar estado de usuario (activo/inactivo)
+PATCH {{baseUrl}}/api/usuarios/10/estado
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "estado": 0
+}
+
+### PATCH Cambiar rol de usuario
+PATCH {{baseUrl}}/api/usuarios/10/rol
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "rol": "MODERADOR"
+}
+
+### GET Articulos de un usuario
+GET {{baseUrl}}/api/usuarios/4/articulos
+
+### GET Valoraciones de un usuario
+GET {{baseUrl}}/api/usuarios/3/valoraciones
+
+### POST Publicar valoración de un usuario
+POST {{baseUrl}}/api/usuarios/3/valoraciones
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "puntuacion": 1,
+    "comentario": "Muy mal servicio."
+}
