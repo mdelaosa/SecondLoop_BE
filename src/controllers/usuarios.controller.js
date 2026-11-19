@@ -169,6 +169,14 @@ const obtenerValoracionesUsuario = async (req, res) => {
     res.json({ message: 'Valoraciones del usuario obtenidas correctamente', valoraciones });
 }
 
+/**
+ * Publica una valoración dirigida a otro usuario.
+ *
+ * @param {import('express').Request} req - Solicitud HTTP con el emisor autenticado en `req.usuario`, el receptor en `req.params.id` y los datos en `req.body`.
+ * @param {import('express').Response} res - Respuesta HTTP con el identificador de la valoración creada.
+ * @returns {Promise<void>} Finaliza la respuesta HTTP después de publicar la valoración.
+ * @throws {Error} Si ocurre un error al insertar la valoración.
+ */
 const publicarValoracionUsuario = async (req, res) => {
     const { puntuacion, comentario } = req.body;
     const id = await publicarValoracion({ emisor_id: req.usuario.id, receptor_id: req.params.id, puntuacion, comentario });

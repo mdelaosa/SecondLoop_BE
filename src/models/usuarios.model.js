@@ -127,6 +127,17 @@ const obtenerValoraciones = async (id) => {
     return result;
 }
 
+/**
+ * Publica una nueva valoración dirigida a un usuario.
+ *
+ * @param {Object} datos - Datos de la valoración.
+ * @param {number|string} datos.emisor_id - Identificador del usuario que publica la valoración.
+ * @param {number|string} datos.receptor_id - Identificador del usuario que recibe la valoración.
+ * @param {number} datos.puntuacion - Puntuación otorgada al usuario receptor.
+ * @param {string|null} datos.comentario - Comentario opcional asociado a la valoración.
+ * @returns {Promise<number>} Identificador generado para la nueva valoración.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
 const publicarValoracion = async ({emisor_id, receptor_id, puntuacion, comentario}) => {
     const [result] = await db.execute('INSERT INTO valoraciones (emisor_id, receptor_id, puntuacion, comentario) VALUES (?, ?, ?, ?)', [emisor_id, receptor_id, puntuacion, comentario]);
     return result.insertId;
