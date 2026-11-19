@@ -1,13 +1,48 @@
 // Requests to test the API from VS Code (REST Client extension)
 @baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTc5NTA1ODI4NywiZXhwIjoxNzk1MDYxODg3fQ.ab6l1w-2p8vI_32X5yD_aXYchTQIl9dqff94oT1ROk4
 
-### GET example
-GET {{baseUrl}}/api
-
-### POST example
-POST {{baseUrl}}/api
+### POST Registrar usuario
+POST {{baseUrl}}/api/usuarios/registro
 Content-Type: application/json
 
 {
-    "name": "example"
+    "nombre": "Evelin",
+    "apellidos": "Andrade",
+    "username": "evelinandrade",
+    "email": "evelinandrade@mail.com",
+    "password": "123456",
+    "foto": "https://example.com/foto.jpg",
+    "localizacion": "Madrid",
+    "codigo_postal": "28001"
 }
+
+### POST Login
+POST {{baseUrl}}/api/usuarios/login
+Content-Type: application/json
+
+{
+    "email": "evelinandrade@mail.com",
+    "password": "123456"
+}
+
+### GET Obtener perfil de usuario desde el token
+GET {{baseUrl}}/api/usuarios/perfil
+Authorization: {{token}}
+
+### PUT Actualizar perfil de usuario desde el token
+PUT {{baseUrl}}/api/usuarios/perfil
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "pedrito2",
+    "apellidos": "gustavo",
+    "username": "pedrito2",
+    "email": "pedrito@mail.com",
+    "foto": "https://example.com/foto.jpg"
+}
+
+### DELETE Borrar perfil de usuario desde el token
+DELETE {{baseUrl}}/api/usuarios/perfil
+Authorization: {{token}}
