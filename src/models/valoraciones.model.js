@@ -12,6 +12,13 @@ const obtenerValoraciones = async (id) => {
     return result;
 }
 
+/**
+ * Obtiene una valoración mediante su identificador.
+ *
+ * @param {number|string} id - Identificador de la valoración.
+ * @returns {Promise<Object|null>} Valoración encontrada o `null` si no existe.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
 const obtenerValoracionPorId = async (id) => {
     const [result] = await db.execute('SELECT * FROM valoraciones WHERE id = ?', [id])
     if (result.length === 0) return null;
@@ -34,6 +41,13 @@ const publicarValoracion = async ({emisor_id, receptor_id, puntuacion, comentari
     return result.insertId;
 }
 
+/**
+ * Elimina una valoración de la base de datos.
+ *
+ * @param {number|string} id - Identificador de la valoración que se eliminará.
+ * @returns {Promise<Object>} Resultado devuelto por la operación de eliminación.
+ * @throws {Error} Si ocurre un error al ejecutar la consulta.
+ */
 const borrarValoracion = async  (id) => {
     const [result] = await db.execute('DELETE FROM valoraciones WHERE id = ?', [id])
     return result

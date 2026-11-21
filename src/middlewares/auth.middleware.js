@@ -13,7 +13,7 @@ import { obtenerUsuarioPorId } from '../models/usuarios.model.js';
  */
 const authToken = async (req, res, next) => {
     if (!req.headers.authorization) {
-        return res.status(403).json({ message: 'No se proporcionó un token de autenticación' });
+        return res.status(401).json({ message: 'No se proporcionó un token de autenticación' });
     }
 
     const { authorization: token } = req.headers;
@@ -27,11 +27,11 @@ const authToken = async (req, res, next) => {
     
     const usuario = await obtenerUsuarioPorId(data.id);
     if (!usuario) {
-        return res.status(403).json({ message: 'Usuario no encontrado' });
+        return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
     if (usuario.esta_activo === 0) {
-        return res.status(403).json({ message: 'Usuario no activo' });
+        return res.status(404).json({ message: 'Usuario no activo' });
     }
     
     req.usuario = usuario;

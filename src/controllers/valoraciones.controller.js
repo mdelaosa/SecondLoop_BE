@@ -25,10 +25,18 @@ const obtenerValoracionesUsuario = async (req, res) => {
 const publicarValoracionUsuario = async (req, res) => {
     const { puntuacion, comentario } = req.body;
     const id = await publicarValoracion({ emisor_id: req.usuario.id, receptor_id: req.params.id, puntuacion, comentario });
-    const valoracion = obtenerValoracionPorId(id)
-    res.json({ message: 'Valoración publicada correctamente', valoracion });
+    const valoracion = await obtenerValoracionPorId(id)
+    res.status(201).json({ message: 'Valoración publicada correctamente', valoracion });
 }
 
+/**
+ * Elimina una valoración mediante su identificador.
+ *
+ * @param {import('express').Request} req - Solicitud HTTP que contiene el identificador de la valoración en `req.params.id`.
+ * @param {import('express').Response} res - Respuesta HTTP con los datos de la valoración eliminada.
+ * @returns {Promise<void>} Finaliza la respuesta HTTP después de borrar la valoración.
+ * @throws {Error} Si ocurre un error al consultar o borrar la valoración.
+ */
 const borrarValoracionPorId = async ( req, res ) => {
     const { id } = req.params;
     const valoracion = await obtenerValoracionPorId(id)

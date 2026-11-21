@@ -82,5 +82,5 @@ Content-Type: application/json
 }
 
 ###DELETE Valoracion por ID
-DELETE {{baseUrl}}/api/valoraciones/19
+DELETE {{baseUrl}}/api/valoraciones/25
 Authorization: {{token}}

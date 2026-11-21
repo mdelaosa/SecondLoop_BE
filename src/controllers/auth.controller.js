@@ -17,7 +17,7 @@ const registro = async (req, res) => {
     try {
         const id = await insertarUsuario(req.body);
         const usuario = await obtenerUsuarioPorId(id)
-        res.json({ message: 'Usuario registrado correctamente', usuario});
+        res.status(201).json({ message: 'Usuario registrado correctamente', usuario});
     } catch (error) {
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({ message: 'El email ya esta registrado' });
