@@ -1,4 +1,86 @@
 // Requests to test the API from VS Code (REST Client extension)
 @baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzk1MjMwNTkwLCJleHAiOjE3OTUyMzQxOTB9.Wv6_d__tHv2NlQAt1kJJQQfV_-8KYHvG5L_V79FjT_w
 
+### POST Registrar usuario
+POST {{baseUrl}}/api/auth/registro
+Content-Type: application/json
 
+{
+    "nombre": "Marlen",
+    "apellidos": "Andrade",
+    "username": "marlenandrade",
+    "email": "marlenandrade@mail.com",
+    "password": "123456",
+    "foto": "https://example.com/foto.jpg",
+    "localizacion": "Madrid",
+    "codigo_postal": "28001"
+}
+
+### POST Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@email.com",
+    "password": "123456"
+}
+
+### GET Obtener perfil de usuario desde el token
+GET {{baseUrl}}/api/usuarios/perfil
+Authorization: {{token}}
+
+### PUT Actualizar perfil de usuario desde el token
+PUT {{baseUrl}}/api/usuarios/perfil
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "pedrito2",
+    "apellidos": "gustavo",
+    "username": "pedrito2",
+    "email": "pedrito@mail.com",
+    "foto": "https://example.com/foto.jpg"
+}
+
+### DELETE Borrar perfil de usuario desde el token
+DELETE {{baseUrl}}/api/usuarios/perfil
+Authorization: {{token}}
+
+### PATCH Cambiar estado de usuario (activo/inactivo)
+PATCH {{baseUrl}}/api/usuarios/5/estado
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "estado": 0
+}
+
+### PATCH Cambiar rol de usuario
+PATCH {{baseUrl}}/api/usuarios/5/rol
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "rol": "MODERADOR"
+}
+
+### GET Articulos de un usuario
+GET {{baseUrl}}/api/usuarios/4/articulos
+
+### GET Valoraciones de un usuario
+GET {{baseUrl}}/api/valoraciones/usuarios/3
+
+### POST Publicar valoración de un usuario
+POST {{baseUrl}}/api/valoraciones/usuarios/3
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "puntuacion": 1,
+    "comentario": "Muy mal servicio."
+}
+
+###DELETE Valoracion por ID
+DELETE {{baseUrl}}/api/valoraciones/25
+Authorization: {{token}}
