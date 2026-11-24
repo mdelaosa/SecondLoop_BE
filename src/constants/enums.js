@@ -1,7 +1,7 @@
 // Constantes y ENUMs
 
-// Constantes de Provincias de España para devolver en la ruta de localización de articulos
-// Se guardan en el campo 'localizacion' (VARCHAR) de la tabla 'articulos'
+// Constantes de Provincias de España para devolver en la ruta de localización de usuarios
+// Se guardan en el campo 'localizacion' (VARCHAR) de la tabla 'usuarios'
 
 export const PROVINCIAS = [
     'Álava', 'Albacete', 'Alicante', 'Almería', 'Asturias', 'Ávila',

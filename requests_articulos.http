@@ -1,0 +1,29 @@
+// Requests to test the API from VS Code (REST Client extension)
+@baseUrl = http://localhost:3000
+
+//////////////**** CATEGORIAS ****/////////////////
+
+### GET categorias
+GET {{baseUrl}}/api/categorias
+
+### GET By ID
+GET {{baseUrl}}/api/categorias/1
+
+### POST categoria
+POST {{baseUrl}}/api/categorias
+Content-Type: application/json
+
+{
+    "nombre": "categoria_nueva1"
+}
+
+### PUT categoria
+PUT {{baseUrl}}/api/categorias/8
+Content-Type: application/json
+
+{
+    "nombre": "categoria_41"
+}
+
+### DELETE categoria
+DELETE {{baseUrl}}/api/categorias/11
