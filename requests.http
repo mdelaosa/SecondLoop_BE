@@ -1,6 +1,6 @@
 // Requests to test the API from VS Code (REST Client extension)
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzk1MjMwNTkwLCJleHAiOjE3OTUyMzQxOTB9.Wv6_d__tHv2NlQAt1kJJQQfV_-8KYHvG5L_V79FjT_w
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzk1NTc5MTQ5LCJleHAiOjE3OTU1ODI3NDl9.Vz0HAV4xCmUAzZQJHZSYXizqkJ_yf2XcOv5NUZl2o1Y
 
 ### POST Registrar usuario
 POST {{baseUrl}}/api/auth/registro
@@ -83,4 +83,19 @@ Content-Type: application/json
 
 ###DELETE Valoracion por ID
 DELETE {{baseUrl}}/api/valoraciones/25
+Authorization: {{token}}
+
+###POST Reporte
+POST {{baseUrl}}/api/reportes
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "motivo": "testing",
+    "detalle": "detalle testing",
+    "usuario_reportado_id": 2
+}
+
+###GET Reportes
+GET {{baseUrl}}/api/reportes
 Authorization: {{token}}
