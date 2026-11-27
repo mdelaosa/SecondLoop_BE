@@ -1,0 +1,137 @@
+// Requests to test the API from VS Code (REST Client extension)
+@baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzk1ODE3MjU4LCJleHAiOjE3OTU4MjA4NTh9.OywCc9j97Yfva41X28qVuNzWgFxNZNsDzKa-1Qfpv74
+
+### ==========================================
+### CATEGORIAS
+### ==========================================
+
+### GET categorias
+GET {{baseUrl}}/api/categorias
+
+### GET By ID
+GET {{baseUrl}}/api/categorias/2
+
+### POST categoria (ADMINISTRADOR)
+POST {{baseUrl}}/api/categorias
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "categoria_nueva"
+}
+
+### PUT categoria
+PUT {{baseUrl}}/api/categorias/2
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "categoria_nueva2"
+}
+
+### DELETE categoria
+DELETE {{baseUrl}}/api/categorias/2
+Authorization: {{token}}
+
+
+### ==========================================
+### ARTICULOS
+### ==========================================
+
+### GET artículos publicados (Público)
+GET {{baseUrl}}/api/articulos
+
+### GET - Filtrar artículos publicados (Público - por titulo, descripcion, género, talla, marca, estado de conservación, precio, CP, localizacion)
+GET {{baseUrl}}/api/articulos?titulo=Camiseta&descripcion=training&genero=M&marca=Adidas&talla=S&estado_conservacion=NUEVO&precio=19&codigo_postal=28001&localizacion=madrid
+
+### GET - Detalle de un artículo concreto por ID (Público)
+GET {{baseUrl}}/api/articulos/5
+
+### GET - Obtener todos los artículos propios ya sean borradores, publicados, vendidos, etc. (Privado - Propietario)
+GET {{baseUrl}}/api/articulos/propios
+Authorization: {{token}}
+
+### GET - Filtrar artículos propios por estado (BORRADOR, PUBLICADO, VENDIDO, EN_REVISION, RETIRADO) (Privado - Propietario) 
+GET {{baseUrl}}/api/articulos/propios?estado=PUBLICADOS
+Authorization: {{token}}
+
+### POST Crear un nuevo artículo con fotos iniciales (Privado - JWT)
+POST {{baseUrl}}/api/articulos
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "titulo": "Cazadora vaquera vintage",
+    "descripcion": "Cazadora vaquera azul clásico, apenas usada dos veces.",
+    "precio": 25.50,
+    "talla": "M",
+    "genero": "UNISEX",
+    "estado_conservacion": "COMO_NUEVO",
+    "categoria_id": 1,
+    "imagenes": [
+        "https://unsplash.com"
+    ]
+}
+
+### PUT Editar los datos de un artículo (Privado - Propietario)
+PUT {{baseUrl}}/api/articulos/10
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "titulo": "Cazadora vaquera vintage rebajada",
+    "descripcion": "Cazadora vaquera azul clásico en perfecto estado.",
+    "precio": 20.00,
+    "talla": "M",
+    "genero": "UNISEX",
+    "estado_conservacion": "COMO_NUEVO",
+    "categoria_id": 1
+}
+
+### PATCH Cambiar estado de publicación (Privado - Propietario o AMINISTRADOR o MODERADOR)
+PATCH {{baseUrl}}/api/articulos/10/estado
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "estado": "PUBLICADO",
+    "comprador_id": 3
+}
+
+
+### DELETE Eliminar un artículo (Privado - Propietario)
+DELETE {{baseUrl}}/api/articulos/25
+Authorization: {{token}}
+
+### ==========================================
+### FOTOS DE ARTICULOS
+### ==========================================
+
+### POST Añadir una o varias fotos a un artículo existente (Privado - Propietario)
+POST {{baseUrl}}/api/articulos/29/fotos
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "imagenes": [
+        "https://unsplash.com",
+        "https://unsplash.com"
+    ]
+}
+
+### DELETE Eliminar una foto concreta de un artículo (Privado - Propietario)
+DELETE {{baseUrl}}/api/articulos/29/fotos/36
+Authorization: {{token}}
+
+### ==========================================
+### ARTICULOS FAVORITOS
+### ==========================================
+
+### POST Añadir o quitar artículo de favoritos (Toggle) (Privado - Propietario)
+POST {{baseUrl}}/api/articulos/21/favorito
+Authorization: {{token}}
+
+### GET Listar mis artículos publicados favoritos (Privado - Propietario)
+GET {{baseUrl}}/api/articulos/favoritos
+Authorization: {{token}}
