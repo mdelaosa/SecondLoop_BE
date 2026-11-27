@@ -1,47 +1,56 @@
 import db from '../config/db.js';
 
 const selectAll = async () => {
-    const [result] = await db.execute('select * from categorias');
-    console.log(result);
+    const [result] = await db.execute('SELECT * FROM categorias ORDER BY nombre ASC');
     return result;
-}
+};
 
 const selectById = async (idCategoria) => {
-
     const [result] = await db.execute(
-        'select * from categorias where id = ?',
+        'SELECT * FROM categorias WHERE id = ?',
         [idCategoria]
     );
     if (result.length === 0) {
         return null;
     }
     return result[0];
-}
+};
+
+const selectByNombre = async (nombre) => {
+    const [result] = await db.execute(
+        'SELECT * FROM categorias WHERE nombre = ?',
+        [nombre]
+    );
+    if (result.length === 0) {
+        return null;
+    }
+    return result[0];
+};
 
 const insert = async ({ nombre }) => {
     const [result] = await db.execute(
-        'insert into categorias (nombre) values (?)',
+        'INSERT INTO categorias (nombre) VALUES (?)',
         [nombre]
     );
     return result;
-}
+};
 
 const updateById = async (idCategoria, { nombre }) => {
     const [result] = await db.execute(
-        'update categorias set nombre = ? where id = ?',
+        'UPDATE categorias SET nombre = ? WHERE id = ?',
         [nombre, idCategoria]
     );
     return result;
-}
+};
 
 const deleteById = async (idCategoria) => {
     const [result] = await db.execute(
-        'delete from categorias where id = ?',
+        'DELETE FROM categorias WHERE id = ?',
         [idCategoria]
     );
     return result;
-}
+};
 
 export {
-    selectAll, selectById, insert, updateById, deleteById
-}
+    selectAll, selectById, selectByNombre, insert, updateById, deleteById
+};

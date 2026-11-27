@@ -1,22 +1,19 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import { create, edit, getAll, getById, remove } from "../controllers/categorias.controller.js";
-import { checkId } from "../middlewares/categorias.middleware.js";
-//import { checkAdmin, checkRole } from "../middlewares/usuarios.middleware.js";
+import { getAll, getById, create, edit, remove } from '../controllers/categorias.controller.js';
+import { checkId, validarCategoria } from '../middlewares/categorias.middleware.js';
+import { checkRol } from '../middlewares/usuarios.middleware.js';
+import { authToken } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
+// Rutas públicas
 router.get('/', getAll);
-
 router.get('/:idCategoria', checkId, getById);
 
-//router.post('/', checkRole('admin'), create);
-router.post('/', create);
-
-//router.put('/:idCategoria', checkAdmin, checkId, edit);
-router.put('/:idCategoria', checkId, edit);
-
-//router.delete('/:idCategoria', checkRole('usuario'), checkId, remove);
-router.delete('/:idCategoria', checkId, remove);
+// Rutas privadas (Solo ADMINISTRADOR)
+router.post('/', authToken, checkRol(['ADMINISTRADOR']), validarCategoria, create);
+router.put('/:idCategoria', authToken, checkRol(['ADMINISTRADOR']), checkId, validarCategoria, edit);
+router.delete('/:idCategoria', authToken, checkRol(['ADMINISTRADOR']), checkId, remove);
 
 export default router;

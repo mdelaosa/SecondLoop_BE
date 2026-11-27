@@ -1,6 +1,6 @@
 // Requests to test the API from VS Code (REST Client extension)
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiaWF0IjoxNzk1MjMwNTkwLCJleHAiOjE3OTUyMzQxOTB9.Wv6_d__tHv2NlQAt1kJJQQfV_-8KYHvG5L_V79FjT_w
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzk1ODE3MjU4LCJleHAiOjE3OTU4MjA4NTh9.OywCc9j97Yfva41X28qVuNzWgFxNZNsDzKa-1Qfpv74
 
 ### POST Registrar usuario
 POST {{baseUrl}}/api/auth/registro
@@ -9,8 +9,8 @@ Content-Type: application/json
 {
     "nombre": "Marlen",
     "apellidos": "Andrade",
-    "username": "marlenandrade",
-    "email": "marlenandrade@mail.com",
+    "username": "marlenandrade1",
+    "email": "marlenandrade1@mail.com",
     "password": "123456",
     "foto": "https://example.com/foto.jpg",
     "localizacion": "Madrid",
@@ -57,7 +57,7 @@ Content-Type: application/json
 }
 
 ### PATCH Cambiar rol de usuario
-PATCH {{baseUrl}}/api/usuarios/5/rol
+PATCH {{baseUrl}}/api/usuarios/6/rol
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -66,7 +66,7 @@ Content-Type: application/json
 }
 
 ### GET Articulos de un usuario
-GET {{baseUrl}}/api/usuarios/4/articulos
+GET {{baseUrl}}/api/usuarios/5/articulos
 
 ### GET Valoraciones de un usuario
 GET {{baseUrl}}/api/valoraciones/usuarios/3
@@ -82,5 +82,5 @@ Content-Type: application/json
 }
 
 ###DELETE Valoracion por ID
-DELETE {{baseUrl}}/api/valoraciones/25
+DELETE {{baseUrl}}/api/valoraciones/21
 Authorization: {{token}}

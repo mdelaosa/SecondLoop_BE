@@ -1,50 +1,62 @@
-import { deleteById, insert, selectAll, selectById, updateById } from "../models/categorias.model.js"
+import { deleteById, insert, selectAll, selectById, updateById } from "../models/categorias.model.js";
 
-const getAll = async (req, res) => {
-    const categorias = await selectAll();
-    console.log(categorias);
-    res.json(categorias);
-}
+const getAll = async (req, res, next) => {
+    try {
+        const categorias = await selectAll();
+        return res.json(categorias);
+    } catch (error) {
+        next(error);
+    }
+};
 
 const getById = async (req, res) => {
-    res.json(req.categoria);
-}
+    return res.json(req.categoria);
+};
 
-const create = async (req, res) => {
-    const result = await insert(req.body);
-    // En la respuesta del insert recibimos la propiedad insertId
-    const categoria = await selectById(result.insertId);
-    res.json(categoria);
-}
+const create = async (req, res, next) => {
+    try {
+        const result = await insert(req.body);
+        const categoria = await selectById(result.insertId);
+        return res.status(201).json(categoria);
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ message: 'Ya existe una categoría con ese nombre.' });
+        }
+        next(error);
+    }
+};
 
-const edit = async (req, res) => {
-    // En req.body -> datos nuevos de la categoria
-    // En req.params.idCategoria -> el id de la categoria a actualizar
+const edit = async (req, res, next) => {
     const { idCategoria } = req.params;
 
-    await updateById(idCategoria, req.body);
-    // Recuperar la categoria actualizada
-    const categoria = await selectById(idCategoria);
-    res.json(categoria);
-}
+    try {
+        await updateById(idCategoria, req.body);
+        const categoria = await selectById(idCategoria);
+        return res.json(categoria);
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(400).json({ message: 'Ya existe una categoría con ese nombre.' });
+        }
+        next(error);
+    }
+};
 
-const remove = async (req, res) => {
+const remove = async (req, res, next) => {
     const { idCategoria } = req.params;
 
     try {
         await deleteById(idCategoria);
-        res.json(categoria);
+        return res.json(req.categoria);
     } catch (error) {
         if (error.code === 'ER_ROW_IS_REFERENCED_2') {
             return res.status(400).json({
                 message: 'No se puede eliminar la categoría porque tiene artículos asociados.'
             });
         }
-//        next(error);
+        next(error);
     }
-
-}
+};
 
 export {
     getAll, getById, create, edit, remove
-}
+};

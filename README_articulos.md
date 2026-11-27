@@ -1,143 +1,176 @@
-# API Second_Loop
+# API Second_Loop — Categorías, Artículos, Fotos y Favoritos
 
-## Recuperar todas las categorias
+---
 
-Method: GET
-Url: /api/categorias
-Headers: XXXX (PUBLICO)
-Body: XXXXX
+## Categorías
 
-Response:
-- Un array con todas las categorías
+### Recuperar todas las categorías
+- **Method:** `GET`
+- **URL:** `/api/categorias`
+- **Headers:** No requiere *(Público)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Array de objetos con todas las categorías ordenadas alfabéticamente.
 
-## Crear una nueva categoría
+### Recuperar una categoría por ID
+- **Method:** `GET`
+- **URL:** `/api/categorias/:idCategoria`
+- **Headers:** No requiere *(Público)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Objeto con los datos de la categoría solicitada.
 
-Method: POST
-Url: /api/categorias
-Headers: Authorization -> TOKEN  (ADMINISTRADOR)
-Body: nombre
+### Crear una nueva categoría
+- **Method:** `POST`
+- **URL:** `/api/categorias`
+- **Headers:** `Authorization: <TOKEN>` *(Rol: `ADMINISTRADOR`)*
+- **Body (JSON):**
+  ```json
+  {
+    "nombre": "Ropa Deportiva"
+  }
+  ```
+- **Response (`201 Created`):** Objeto con los datos de la nueva categoría.
 
-Response: 
-- Objeto con los datos de la nueva categoría
+### Actualizar los datos de una categoría
+- **Method:** `PUT`
+- **URL:** `/api/categorias/:idCategoria`
+- **Headers:** `Authorization: <TOKEN>` *(Rol: `ADMINISTRADOR`)*
+- **Body (JSON):**
+  ```json
+  {
+    "nombre": "Moda Deportiva"
+  }
+  ```
+- **Response (`200 OK`):** Objeto con los datos de la categoría actualizada.
 
-## Actualiza los datos de una categoría
+### Borrar una categoría
+- **Method:** `DELETE`
+- **URL:** `/api/categorias/:idCategoria`
+- **Headers:** `Authorization: <TOKEN>` *(Rol: `ADMINISTRADOR`)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Mensaje de confirmación y objeto con los datos de la categoría eliminada. *(Devuelve `400 Bad Request` si tiene artículos asociados)*.
 
-Method: PUT
-Url: /api/categorias/IDCATEGORIA
-Headers: Authorization -> TOKEN  (ADMINISTRADOR)
-Body: nombre
+---
 
-Response:
-- Objeto con los datos de la categoría actualizada
+## Artículos
 
-## Borrar una categoría
+### Recuperar todos los artículos publicados (con filtros)
+- **Method:** `GET`
+- **URL:** `/api/articulos`
+- **Headers:** No requiere *(Público)*
+- **Query Params opcionales:** `?titulo=`, `?descripcion=`, `?precio=`, `?talla=`, `?genero=`, `?marca=`, `?estado_conservacion=`, `?codigo_postal=`, `?localizacion=`, `?categoria_id=`.
+- **Body:** Ninguno
+- **Response (`200 OK`):** Array de objetos con los artículos en estado `PUBLICADO` de vendedores activos.
 
-Method: DELETE
-Url: /api/categorias/IDCATEGORIA
-Headers: Authorization -> TOKEN  (ADMINISTRADOR)
-Body: XXXXX
+### Recuperar los detalles de un artículo
+- **Method:** `GET`
+- **URL:** `/api/articulos/:idArticulo`
+- **Headers:** No requiere *(Público)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Objeto con todos los detalles del artículo, los datos del vendedor y el array `fotos`.
 
-Response:
-- Objeto con los datos de la categoría borrada
+### Recuperar todos los artículos propios (con filtro de estado opcional)
+- **Method:** `GET`
+- **URL:** `/api/articulos/propios`
+- **Headers:** `Authorization: <TOKEN>` *(Cualquier rol autenticado; el `vendedor_id` se obtiene del token)*
+- **Query Param opcional:** `?estado=`.
+- **Body:** Ninguno
+- **Response (`200 OK`):** Array de objetos con los artículos propios en cualquier estado o en el estado filtrado.
 
-## Recuperar todos los artículos activos (estado = 'PUBLICADO')
+### Crear un nuevo artículo
+- **Method:** `POST`
+- **URL:** `/api/articulos`
+- **Headers:** `Authorization: <TOKEN>` *(Cualquier rol autenticado; el `vendedor_id` se obtiene del token)*
+- **Body (JSON):**
+  ```json
+  {
+    "titulo": "Cazadora vaquera vintage",
+    "descripcion": "Cazadora vaquera azul clásico, apenas usada.",
+    "precio": 25.50,
+    "talla": "M",
+    "genero": "UNISEX",
+    "estado_conservacion": "COMO_NUEVO",
+    "categoria_id": 1,
+    "imagenes": ["https://ejemplo.com"]
+  }
+  ```
+  *(El campo `imagenes` es opcional en la creación).*
+- **Response (`201 Created`):** Objeto con los datos del artículo creado y sus fotos.
 
-Method: GET
-Url: /api/articulos
-Headers: XXXX   (PUBLICO)
-Body: XXXXX
+### Modificar los datos de un artículo
+- **Method:** `PUT`
+- **URL:** `/api/articulos/:idArticulo`
+- **Headers:** `Authorization: <TOKEN>` *(Solo el vendedor propietario)*
+- **Body (JSON):** `titulo`, `descripcion`, `precio`, `talla`, `genero`, `estado_conservacion`, `categoria_id`.
+- **Response (`200 OK`):** Objeto con los datos del artículo actualizado.
 
-Response:
-- Un array con todos los artículos publicados. Admite query params para filtrar: ?q=texto (índice FULLTEXT), ?categoria_id=, ?talla=, ?genero=, ?estado_conservacion=, ?precio=? y ?codigo_postal=?.
+### Cambiar el estado de publicación de un artículo
+- **Method:** `PATCH`
+- **URL:** `/api/articulos/:idArticulo/estado`
+- **Headers:** `Authorization: <TOKEN>` *(Propietario, Administrador o Moderador)*
+- **Body (JSON):**
+  ```json
+  {
+    "estado": "VENDIDO",
+    "comprador_id": 3
+  }
+  ```
+  *(Valores válidos para `estado_publicacion`: `BORRADOR`, `PUBLICADO`, `EN_REVISION`, `RETIRADO`, `VENDIDO`. El campo `comprador_id` solo aplica si el estado es `VENDIDO`).*
+- **Response (`200 OK`):** Mensaje de confirmación y objeto con los datos del artículo actualizado.
 
-## Recuperar los detalles de un artículo (estado = 'PUBLICADO')
+### Borrar un artículo
+- **Method:** `DELETE`
+- **URL:** `/api/articulos/:idArticulo`
+- **Headers:** `Authorization: <TOKEN>` *(Propietario; sus fotos se eliminan en cascada)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Mensaje de confirmación y objeto con los datos del artículo eliminado.
 
-Method: GET
-Url: /api/articulos/IDARTICULO
-Headers: XXXX   (PUBLICO)
-Body: XXXXX
+---
 
-Response:
-- Un array con todos los detalles del artículo incluyendo sus fotos y datos del vendedor. Añade la condición AND a.estado = 'PUBLICADO' directamente en el WHERE de tu consulta de detalle público (y asegúrate de que el vendedor también esté activo con u.esta_activo = 1)
+## Fotos de Artículos
 
-## Crear un nuevo artículo (en estado 'BORRADOR' o 'PUBLICADO')
+### Añadir una o varias fotos a un artículo
+- **Method:** `POST`
+- **URL:** `/api/articulos/:idArticulo/fotos`
+- **Headers:** `Authorization: <TOKEN>` *(Solo el vendedor propietario)*
+- **Body (JSON):** Enviar una URL en `"imagen"` o un array de URLs en `"imagenes"`:
+  ```json
+  {
+    "imagenes": [
+      "https://ejemplo.com",
+      "https://ejemplo.com"
+    ]
+  }
+  ```
+- **Response (`201 Created`):** Mensaje de confirmación y array actualizado con todas las fotos del artículo.
 
-Method: POST
-Url: /api/articulos
-Headers: Authorization -> TOKEN  (Cualquier rol (JWT))
-Body: titulo, descripcion, precio, talla, genero, marca, localizacion, codigo_postal, estado_conservacion, estado, categoria_id, vendedor_id
+### Eliminar una foto concreta de un artículo
+- **Method:** `DELETE`
+- **URL:** `/api/articulos/:idArticulo/fotos/:idFoto`
+- **Headers:** `Authorization: <TOKEN>` *(Solo el vendedor propietario)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Mensaje de confirmación y el `fotoId` eliminado.
 
-Response: 
-- Objeto con los datos del nuevo artículo
+---
 
-## Modifica los datos de un artículo (en estado 'BORRADOR' o 'PUBLICADO')
+## Favoritos
 
-Method: PUT
-Url: /api/articulos/IDARTICULO
-Headers: Authorization -> TOKEN  (Propietario)
-Body: titulo, descripcion, precio, talla, genero, marca, localizacion, codigo_postal, estado_conservacion, estado, categoria_id, vendedor_id
+### Listar los artículos favoritos del usuario autenticado
+- **Method:** `GET`
+- **URL:** `/api/articulos/favoritos`
+- **Headers:** `Authorization: <TOKEN>` *(Cualquier rol autenticado)*
+- **Body:** Ninguno
+- **Response (`200 OK`):** Array de objetos con los artículos guardados en favoritos por el usuario del token.
 
-Response: 
-- Objeto con los datos del artículo modificado
-
-## Cambia los datos del estado de un artículo (y el comprador si fue vendido)
-
-Method: PATCH
-Url: /api/articulos/IDARTICULO/estado
-Headers: Authorization -> TOKEN  (Propietario, MODERADOR o ADMINISTRADOR)
-Body: estado, comprador_id
-
-Response: 
-- Objeto con los datos del artículo modificado
-
-## Borrar un artículo y sus fotos se borran automáticamente
-
-Method: DELETE
-Url: /api/articulos/IDARTICULO
-Headers: Authorization -> TOKEN  (Propietario, MODERADOR o ADMINISTRADOR)
-Body: XXXXX
-
-Response:
-- Objeto con los datos del artículo borrado
-
-## Crea una o varias fotos asociadas a un artículo
-
-Method: POST
-Url: /api/articulos/IDARTICULO/fotos
-Headers: Authorization -> TOKEN  (Propietario)
-Body: array de fotos (campo image)
-
-Response: 
-- Objeto con array con las fotos del artículo
-
-## Elimina una foto concreta del artículo
-
-Method: DELETE
-Url: /api/articulos/IDARTICULO/fotos/IDFOTO
-Headers: Authorization -> TOKEN  (Propietario)
-Body: XXXXX
-
-Response:
-- Objeto con los datos del artículo borrado
-
-## Lista todos los artículos guardados en favoritos por el usuario autenticado
-
-Method: GET
-Url: /api/favoritos
-Headers: XXXX   (Cualquier rol (JWT))
-Body: XXXXX
-
-Response:
-- Un array con todos los artículos favoritos.
-
-## Añade o quita (toggle) el artículo de la tabla favoritos
-
-Method: POST
-Url: /api/articulos/IDARTICULO/favoritos
-Headers: XXXX   (Cualquier rol (JWT))
-Body: XXXXX
-
-Response:
-- Un array con todos los artículos favoritos.
-
-
+### Añadir o quitar un artículo de favoritos (Toggle)
+- **Method:** `POST`
+- **URL:** `/api/articulos/:idArticulo/favorito`
+- **Headers:** `Authorization: <TOKEN>` *(Cualquier rol autenticado)*
+- **Body:** Ninguno
+- **Response (`200 OK`):**
+  ```json
+  {
+    "message": "Artículo añadido a favoritos.",
+    "articuloId": 1,
+    "isFavorite": true
+  }
+  ```
